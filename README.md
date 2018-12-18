@@ -587,7 +587,7 @@ page](http://http.developer.nvidia.com/GPUGems2/gpugems2_chapter20.html).
 
 ## Further information
 
-**Homepage** - [Tesseract](http://tesseract.gg)  
-**Developer** - [Lee Salzman](http://sauerbraten.org/lee/)
+- **Homepage** - [Tesseract](http://tesseract.gg)
+- **Developer** - [Lee Salzman](http://sauerbraten.org/lee/)
 
 *Last revised November 7, 2013.*
