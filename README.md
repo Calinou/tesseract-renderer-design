@@ -105,27 +105,27 @@ normalized 2D textures to avoid some extra texture coordinate math. The filter
 (with the unoptimized yet more precise box filter in comments) is listed here
 for posterity's sake:
 
-```c++
-    #define shadowval(center, xoff, yoff) float(shadow2DRect(shadowatlas, center + vec3(xoff, yoff, 0.0)))
-    float filtershadow(vec3 shadowtc)
-    {
-        vec2 offset = fract(shadowtc.xy - 0.5);
-        vec3 center = shadowtc;
-        //center.xy -= offset;
-        //vec4 size = vec4(offset + 1.0, 2.0 - offset), weight = vec4(2.0 - 1.0 / size.xy, 1.0 / size.zw - 1.0);
-        //return (1.0/9.0) * dot(size.zxzx * size.wwyy,
-        //    vec4(shadowval(center, weight.zw),
-        //         shadowval(center, weight.xw),
-        //         shadowval(center, weight.zy),
-        //         shadowval(center, weight.xy)));
-        center.xy -= offset*0.5;
-        vec4 size = vec4(offset + 1.0, 2.0 - offset);
-        return (1.0/9.0) * dot(size.zxzx * size.wwyy,
-            vec4(shadowval(center, -0.5, -0.5),
-                 shadowval(center, 1.0, -0.5),
-                 shadowval(center, -0.5, 1.0),
-                 shadowval(center, 1.0, 1.0)));
-    }
+```cpp
+#define shadowval(center, xoff, yoff) float(shadow2DRect(shadowatlas, center + vec3(xoff, yoff, 0.0)))
+float filtershadow(vec3 shadowtc)
+{
+    vec2 offset = fract(shadowtc.xy - 0.5);
+    vec3 center = shadowtc;
+    //center.xy -= offset;
+    //vec4 size = vec4(offset + 1.0, 2.0 - offset), weight = vec4(2.0 - 1.0 / size.xy, 1.0 / size.zw - 1.0);
+    //return (1.0/9.0) * dot(size.zxzx * size.wwyy,
+    //    vec4(shadowval(center, weight.zw),
+    //         shadowval(center, weight.xw),
+    //         shadowval(center, weight.zy),
+    //         shadowval(center, weight.xy)));
+    center.xy -= offset*0.5;
+    vec4 size = vec4(offset + 1.0, 2.0 - offset);
+    return (1.0/9.0) * dot(size.zxzx * size.wwyy,
+        vec4(shadowval(center, -0.5, -0.5),
+                shadowval(center, 1.0, -0.5),
+                shadowval(center, -0.5, 1.0),
+                shadowval(center, 1.0, 1.0)));
+}
 ```
 
 This idea is extended to larger filter radiuses but is not shown here.
@@ -172,17 +172,17 @@ and removed precision issues inherent in the lookup texture strategy. The lookup
 function that provided the best balance of performance across Nvidia and AMD
 GPUs is listed here:
 
-```c++
-    vec3 getshadowtc(vec3 dir, vec4 shadowparams, vec2 shadowoffset)
-    {
-        vec3 adir = abs(dir);
-        float m = max(adir.x, adir.y);
-        vec2 mparams = shadowparams.xy / max(adir.z, m);
-        vec4 proj;
-        if(adir.x > adir.y) proj = vec4(dir.zyx, 0.0); else proj = vec4(dir.xzy, 1.0);
-        if(adir.z > m) proj = vec4(dir, 2.0);
-        return vec3(proj.xy * mparams.x + vec2(proj.w, step(proj.z, 0.0)) * shadowparams.z + shadowoffset, mparams.y + shadowparams.w);
-    }
+```cpp
+vec3 getshadowtc(vec3 dir, vec4 shadowparams, vec2 shadowoffset)
+{
+    vec3 adir = abs(dir);
+    float m = max(adir.x, adir.y);
+    vec2 mparams = shadowparams.xy / max(adir.z, m);
+    vec4 proj;
+    if(adir.x > adir.y) proj = vec4(dir.zyx, 0.0); else proj = vec4(dir.xzy, 1.0);
+    if(adir.z > m) proj = vec4(dir, 2.0);
+    return vec3(proj.xy * mparams.x + vec2(proj.w, step(proj.z, 0.0)) * shadowparams.z + shadowoffset, mparams.y + shadowparams.w);
+}
 ```
 
 This function overall maps a world-space light-to-surface vector to texture
