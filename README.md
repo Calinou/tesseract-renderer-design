@@ -219,8 +219,7 @@ coordinate increments for each split as originally detailed for Dice's Frostbite
 engine. This allows for somewhat less waste of available shadowmap resolution
 than the standard view-parallel split scheme as well as combats temporally
 instability/shadow swim that would otherwise occur. For further information, see
-[this
-page](http://dice.se/publications/title-shadows-decals-d3d10-techniques-from-frostbite/).
+[this page](https://web.archive.org/web/20121105134010/http://dice.se:80/publications/title-shadows-decals-d3d10-techniques-from-frostbite/).
 
 "Caching is the new culling." Lights can often have large radiuses that pass
 through walls and other such occluders, often making occlusion culling or
