@@ -143,7 +143,7 @@ partitions.
 
 For further information about the basics of rendering cubemap shadowmaps, see
 page 42+ of [this
-PDF](ftp://download.nvidia.com/developer/presentations/2004/GPU_Jackpot/Shadow_Mapping.pdf).
+PDF](https://http.download.nvidia.com/developer/presentations/2004/GPU_Jackpot/Shadow_Mapping.pdf).
 
 Both of these problems may be addressed by unrolled cubemaps, or rather, by
 emulating cubemaps within a 2D texture by manually computing the offset of each
